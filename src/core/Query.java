@@ -8,7 +8,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Query{
+public class Query
+{
     
     private final static String FILE_PROPS = "/properties/database.properties";
     /**
@@ -34,7 +35,7 @@ public class Query{
     private static Connection connect;
    
     /**
-    * Constructeur privé
+    * Constructeur privÃ©
     */
     private Query()
     {
@@ -63,19 +64,20 @@ public class Query{
         try {
             connect = DriverManager.getConnection(this.url, this.user, this.passwd);
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la connexion à la base de données");
+            System.err.println("Erreur lors de la connexion ï¿½ la base de donnï¿½es");
             System.exit(1);
         }
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Query{" + "driver=" + driver + ", url=" + url + ", user=" + user + ", passwd=" + passwd + '}';
     }
 
     /**
-    * Méthode qui va nous retourner notre instance
-    * et la créer si elle n'existe pas...
+    * Mï¿½thode qui va nous retourner notre instance
+    * et la crï¿½er si elle n'existe pas...
     * @return Connection connect
     */
     public static Connection getInstance()
