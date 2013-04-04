@@ -1,6 +1,6 @@
-package core;
+package app.core;
 
-import model.Flow;
+import app.model.Flow;
 
 public class URLFlow extends Flow implements ArticleRecover
 {

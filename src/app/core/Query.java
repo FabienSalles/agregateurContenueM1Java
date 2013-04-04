@@ -1,4 +1,4 @@
-package core;
+package app.core;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class Query
 {
     
-    private final static String FILE_PROPS = "/properties/database.properties";
+    private final static String FILE_PROPS = "/properties/app.database.properties";
     /**
      * Driver
      */

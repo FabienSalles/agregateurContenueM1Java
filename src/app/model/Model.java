@@ -1,4 +1,4 @@
-package model;
+package app.model;
 
 public interface Model {
 	public void save();

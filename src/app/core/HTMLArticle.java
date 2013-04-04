@@ -1,8 +1,8 @@
-package core;
+package app.core;
 
-import model.Article;
+import app.model.Article;
 
-public class MarkdownArticle extends Article implements ArticleParser {
+public class HTMLArticle extends Article implements ArticleParser {
 
 	@Override
 	public void Parse(String article) {
