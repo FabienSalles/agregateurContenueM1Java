@@ -1,4 +1,2 @@
-driver=
-url=
-user=
-passwd=
+driver=org.sqlite.JDBC
+url=jdbc:sqlite:src\\database\\aggregator.db
