@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class Query
 {
     
-    private final static String FILE_PROPS = "/properties/app.database.properties";
+    private final static String FILE_PROPS = "/database/database.properties";
     /**
      * Driver
      */
@@ -21,19 +21,10 @@ public class Query
     */
     private String url;
     /**
-    * Nom du user
-    */
-    private String user;
-    /**
-    * Mot de passe du user
-    */
-    private String passwd;
-
-    /**
     * Objet Connection
     */
     private static Connection connect;
-   
+    
     /**
     * Constructeur privé
     */
@@ -49,42 +40,34 @@ public class Query
         
         this.driver = prop.getProperty("driver");
         this.url = prop.getProperty("url");
-        this.user = prop.getProperty("user");
-        this.passwd = prop.getProperty("passwd");
         
-        try{
+        try {
             Class.forName(this.driver);
         }
-        catch(Exception ex){
+        catch(Exception ex) {
             System.err.println("Erreur lors du changement du driver");
             ex.printStackTrace();
             System.exit(1);
         }
         
         try {
-            connect = DriverManager.getConnection(this.url, this.user, this.passwd);
+            connect = DriverManager.getConnection(this.url);
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la connexion � la base de donn�es");
+            System.err.println("Erreur lors de la connexion à la base de données");
             System.exit(1);
         }
     }
-
-    @Override
-    public String toString()
-    {
-        return "Query{" + "driver=" + driver + ", url=" + url + ", user=" + user + ", passwd=" + passwd + '}';
-    }
-
+    
     /**
-    * M�thode qui va nous retourner notre instance
-    * et la cr�er si elle n'existe pas...
+    * Méthode qui va nous retourner notre instance
+    * et la créer si elle n'existe pas...
     * @return Connection connect
     */
     public static Connection getInstance()
     {
-        if(connect == null){
+        if (connect == null) {
              new Query();
         }
-        return connect;	
+        return connect;    
     }	
 }
