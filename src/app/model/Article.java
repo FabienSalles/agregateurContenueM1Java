@@ -1,9 +1,5 @@
 package app.model;
 
-import java.util.Date;
-
-import org.w3c.dom.Element;
-
 public class Article implements Model
 {
 	protected String title;
@@ -11,14 +7,6 @@ public class Article implements Model
 	protected String date;
 	protected String author;
 	
-	public Article(Element item) {
-		
-	}
-
-	public Article() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public String getTitle()
 	{
 		return title;
@@ -76,11 +64,4 @@ public class Article implements Model
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public String toString() {
-		return "Article : \n Title : " + title + "\n Content : \n" + content + "\n Date : "
-				+ date + "\n Author : " + author + "";
-	}
-	
 }
