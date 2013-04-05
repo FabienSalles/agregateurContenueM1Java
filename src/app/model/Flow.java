@@ -1,13 +1,10 @@
 package app.model;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Flow implements Model
 {
-	/**
-	 *  Chemin du flux
-	 */
-	protected String path;
 	
 	/**
 	 *  liste d'articles correspondant au flux
@@ -23,25 +20,7 @@ public class Flow implements Model
 	 */
 	public Flow()
 	{
-		
-	}
-	
-	/**
-	 * getPath
-	 * @return String
-	 */
-	public String getPath()
-	{
-		return path;
-	}
-
-	/**
-	 * setPath
-	 * @param path
-	 */
-	public void setPath(String path)
-	{
-		this.path = path;
+		this.articles = new LinkedHashSet();
 	}
 	
 	/**
@@ -73,6 +52,14 @@ public class Flow implements Model
 		this.type = type;
 	}
 
+	public void displayArticles()
+	{
+		for(Article article: this.articles)
+		{
+			System.out.println(article);
+		}
+	}
+	
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub

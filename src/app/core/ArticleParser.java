@@ -4,7 +4,7 @@ import app.model.Article;
 
 public interface ArticleParser
 {
-	public void Parse(String article);
+	public void parse(String article);
 	public String parseTitle();
 	public String parseContent();
 	public String parseDate();

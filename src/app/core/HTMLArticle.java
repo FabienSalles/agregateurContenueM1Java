@@ -5,7 +5,7 @@ import app.model.Article;
 public class HTMLArticle extends Article implements ArticleParser {
 
 	@Override
-	public void Parse(String article) {
+	public void parse(String article) {
 		// TODO Auto-generated method stub
 		
 	}

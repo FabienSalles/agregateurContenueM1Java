@@ -20,4 +20,10 @@ public class SQLiteFlow extends Flow implements ArticleRecover
 		return null;
 	}
 
+	@Override
+	public String recoverType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

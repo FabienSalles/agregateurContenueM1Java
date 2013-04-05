@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <item>
+            <title>Exemple du jour</title>
+            <content>Exemple du jour pour XML Facile!</content>
+            <author>Fabien</author>
+            <date>1365149924</date>
+        </item>
+        <item>
+            <title>Article</title>
+            <content>contenue de l'article</content>
+            <author>Fabien</author>
+            <date>1365149924</date>
+        </item>
+    </channel>
+</rss>
