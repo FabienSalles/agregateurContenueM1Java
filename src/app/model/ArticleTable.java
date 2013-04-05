@@ -17,18 +17,18 @@ public class ArticleTable {
 		
 		Connection conn = Query.getInstance();
 		Statement stat = conn.createStatement();
-        ResultSet rs = stat.executeQuery("SELECT * FROM Articles;");
+		ResultSet rs = stat.executeQuery("SELECT * FROM Articles;");
         
-        while(rs.next()) {
-            Article a = new Article();
+		while(rs.next()) {
+            		Article a = new Article();
         	
-        	a.setTitle(rs.getString("title"));
-        	a.setContent(rs.getString("content"));
-            a.setAuthor(rs.getString("author"));
-            a.setDate(rs.getString("date"));
+        			a.setTitle(rs.getString("title"));
+        			a.setContent(rs.getString("content"));
+            		a.setAuthor(rs.getString("author"));
+            		a.setDate(rs.getString("date"));
             
-            articles.add(a);
-        }
+            		articles.add(a);
+	        }
         
 		return articles;
 	}
