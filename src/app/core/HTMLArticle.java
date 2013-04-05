@@ -34,4 +34,10 @@ public class HTMLArticle extends Article implements ArticleParser {
 		return null;
 	}
 
+	@Override
+	public Article search(String keyworkds) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

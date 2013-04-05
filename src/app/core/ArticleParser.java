@@ -1,5 +1,7 @@
 package app.core;
 
+import app.model.Article;
+
 public interface ArticleParser
 {
 	public void Parse(String article);
@@ -7,4 +9,5 @@ public interface ArticleParser
 	public String parseContent();
 	public String parseDate();
 	public String parseAuthor();
+	public Article search(String keyworkds);
 }
