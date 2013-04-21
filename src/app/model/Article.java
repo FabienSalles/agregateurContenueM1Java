@@ -64,4 +64,12 @@ public class Article implements Model
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Article [title=" + title + ", date=" + date + ", author="
+				+ author + "]";
+	}
+	
+	
 }

@@ -23,6 +23,12 @@ public class Flow implements Model
 		this.articles = new LinkedHashSet();
 	}
 	
+	public Flow(String type)
+	{
+		this();
+		this.type = type;
+	}
+	
 	/**
 	 * getArticles
 	 * @return set<Article>
@@ -31,7 +37,7 @@ public class Flow implements Model
 	{
 		return articles;
 	}
-	
+		
 	/**
 	 * setArticles
 	 * @param articles

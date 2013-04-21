@@ -34,6 +34,17 @@ public class URLFlow extends Flow implements ArticleRecover
 	public URLFlow(String url)
 	{
 		super();
+		initFlow(url);
+	}
+	
+	public URLFlow(String url, String type)
+	{
+		super(type);
+		initFlow(url);
+	}
+	
+	private void initFlow(String url)
+	{
 		try 
 		{
 			this.url = new URL(url);
@@ -73,18 +84,8 @@ public class URLFlow extends Flow implements ArticleRecover
             nodes = doc.getElementsByTagName("item");
             for (int i = 0; i < nodes.getLength(); i++)
             {
-            	//System.out.println(nodes.item(i));
             	this.articles.add(new XMLArticle(nodes.item(i)));
             }
-//            for (int i = 0; i < nodes.getLength(); i++) {
-//                element = (Element) nodes.item(i);
-//                System.out.println("Titre: " + readNode(element, "title"));
-//                System.out.println("Lien: " + readNode(element, "link"));
-//                System.out.println("Date: " + GMTDateToFrench(readNode(element, "pubDate")));
-//                System.out.println("Description: " + readNode(element, "description"));
-//                System.out.println();
-//            } //for
-            //for
         } catch (SAXException ex) {
             Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -93,57 +94,6 @@ public class URLFlow extends Flow implements ArticleRecover
             Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
         }
 	}
-
-	 /**
-     * Méthode permettant de retourner ce que contient d'un noeud
-     * @param _node le noeud principal
-     * @param _path suite des noms des noeud sans espace séparer par des "|"
-     * @return un string contenant le valeur du noeud voulut
-     */
-    public String readNode(Node _node, String _path) {
-
-        String[] paths = _path.split("\\|");
-        Node node = null;
-
-        if (paths != null && paths.length > 0) {
-            node = _node;
-
-            for (int i = 0; i < paths.length; i++) {
-                node = getChildByName(node, paths[i].trim());
-            }
-        }
-
-        if (node != null) {
-            return node.getTextContent();
-        } else {
-            return "";
-        }
-    }
-
-    /**
-     * renvoye le nom d'un noeud fils a partir de son nom
-     * @param _node noeud pricipal
-     * @param _name nom du noeud fils
-     * @return le noeud fils
-     */
-    public Node getChildByName(Node _node, String _name) {
-        if (_node == null) {
-            return null;
-        }
-        NodeList listChild = _node.getChildNodes();
-
-        if (listChild != null) {
-            for (int i = 0; i < listChild.getLength(); i++) {
-                Node child = listChild.item(i);
-                if (child != null) {
-                    if ((child.getNodeName() != null && (_name.equals(child.getNodeName()))) || (child.getLocalName() != null && (_name.equals(child.getLocalName())))) {
-                        return child;
-                    }
-                }
-            }
-        }
-        return null;
-    }
 
     /**
      * Afficher une Date GML au format francais
