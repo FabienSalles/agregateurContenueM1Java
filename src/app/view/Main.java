@@ -7,7 +7,8 @@ public class Main
 {
 	public static void main(String args[])
 	{
-		URLFlow flow = new URLFlow("http://rss.lemonde.fr/c/205/f/3050/index.rss");
+		URLFlow flow = new URLFlow("http://www.smashingmagazine.com/", "html");
+		//URLFlow flow = new URLFlow("http://rss.lemonde.fr/c/205/f/3050/index.rss");
 		flow.displayArticles();
 	}
 }

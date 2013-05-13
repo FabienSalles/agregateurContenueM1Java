@@ -71,28 +71,55 @@ public class URLFlow extends Flow implements ArticleRecover
 		{
 			this.recoverRss();
 		}
+		if (this.type.equals("html"))
+		{
+			this.recoverHtml();
+		}
 	}
 	
-	public void recoverRss()
+	public Document getDocument()
 	{
+		Document doc = null;
+		
 		try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(this.url.openStream());
-            NodeList nodes = null;
-            Element element = null;
-            
-            nodes = doc.getElementsByTagName("item");
-            for (int i = 0; i < nodes.getLength(); i++)
-            {
-            	this.articles.add(new XMLArticle(nodes.item(i)));
-            }
-        } catch (SAXException ex) {
-            Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
+        	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			doc = builder.parse(this.url.openStream());
+		} catch (SAXException ex) {
+			Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
         }
+		
+		return doc;
+	}
+	public void recoverRss()
+	{
+		Document doc = this.getDocument();
+		
+		if (doc != null)
+		{
+			NodeList nodes = doc.getElementsByTagName("item");
+	        for (int i = 0; i < nodes.getLength(); i++)
+	        {
+	        	this.articles.add(new XMLArticle(nodes.item(i)));
+	        }
+		}
+	}
+	
+	public void recoverHtml()
+	{
+		Document doc = this.getDocument();
+		
+		if (doc != null)
+		{
+			NodeList nodes = doc.getElementsByTagName("article");
+			for (int i = 0; i < nodes.getLength(); i++)
+	        {
+	        	this.articles.add(new HTMLArticle(doc, nodes.item(i), this.url.getHost()));
+	        }
+		}
 	}
 
     /**
@@ -123,13 +150,16 @@ public class URLFlow extends Flow implements ArticleRecover
 	@Override
 	public String recoverType() throws UnknownTypeException {
 		
-		String str[] = url.getFile().split("\\.");
-		
-		if (str.length==0)
+		if (this.type == null)
 		{
-			throw new UnknownTypeException("type missing");
+			String str[] = url.getFile().split("\\.");
+			
+			if (str.length==1)
+			{
+				throw new UnknownTypeException("type missing");
+			}
+			this.type = str[str.length-1];
 		}
-		this.type = str[str.length-1];
 		return this.type;
 	}
 }
