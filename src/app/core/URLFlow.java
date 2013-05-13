@@ -14,7 +14,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -71,15 +72,15 @@ public class URLFlow extends Flow implements ArticleRecover
 		{
 			this.recoverRss();
 		}
-		if (this.type.equals("html"))
+		if (this.type.equals("html") || this.type.equals("htm") || this.type.equals("php"))
 		{
 			this.recoverHtml();
 		}
 	}
 	
-	public Document getDocument()
+	public void recoverRss()
 	{
-		Document doc = null;
+		org.w3c.dom.Document doc = null;
 		
 		try {
         	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -92,12 +93,6 @@ public class URLFlow extends Flow implements ArticleRecover
             Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
         }
 		
-		return doc;
-	}
-	public void recoverRss()
-	{
-		Document doc = this.getDocument();
-		
 		if (doc != null)
 		{
 			NodeList nodes = doc.getElementsByTagName("item");
@@ -108,17 +103,30 @@ public class URLFlow extends Flow implements ArticleRecover
 		}
 	}
 	
+	/**
+	 * Recover Html articles
+	 */
 	public void recoverHtml()
 	{
-		Document doc = this.getDocument();
+		org.jsoup.nodes.Document doc = null;
+		try {
+			doc = Jsoup.connect(this.url.toString()).get();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if (doc != null)
 		{
-			NodeList nodes = doc.getElementsByTagName("article");
-			for (int i = 0; i < nodes.getLength(); i++)
+			Elements elems = doc.select("article");
+			for (int i = 0; i < elems.size(); i++)
 	        {
-	        	this.articles.add(new HTMLArticle(doc, nodes.item(i), this.url.getHost()));
+	        	this.articles.add(new HTMLArticle(doc, elems.get(i), this.url.getHost()));
 	        }
+			if (this.articles == null)
+			{
+				this.articles.add(new HTMLArticle(doc, doc, this.url.getHost()));
+			}
 		}
 	}
 

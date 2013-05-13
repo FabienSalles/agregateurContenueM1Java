@@ -1,16 +1,14 @@
 package app.core;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import app.model.Article;
 
 public class HTMLArticle extends Article{
 
-	public HTMLArticle(Document doc, Node item, String domain)
+	public HTMLArticle(Document doc, Element item, String domain)
 	{
 		this.parseTitle(doc);
 		this.author = this.parseAuthor(doc);
@@ -19,33 +17,27 @@ public class HTMLArticle extends Article{
 			this.author = domain;
 		}
 		this.date = this.parseDate(doc);
-		this.content = item.getTextContent();
+		this.content = item.html();
 	}
 
-	public void parse(String article) {
-		// TODO Auto-generated method stub
-		
+	public String parseTitle(Document doc)
+	{	
+		return this.title = doc.select("title").first().text();	
 	}
 
-	public String parseTitle(Document doc) {
-		NodeList nodes = doc.getElementsByTagName("title");
-		
-		return this.title = nodes.item(0).getTextContent(); 
-		
-	}
-
-	public String getContent() {
-		return this.content.replaceAll("/(<.*>)/", "");
+	public String getContent()
+	{
+		return HTMLArticle.parse(this.content);
 	}
 
 	public String parseDate(Document doc) {
-		NodeList nodes = doc.getElementsByTagName("meta");
-		for(int i=0; i<nodes.getLength(); i++)
+		Elements metas = doc.select("meta");
+		for(int i = 0; i < metas.size(); i++)
 		{
-			Element item = (Element) nodes.item(i);
-			if (item.getAttribute("http-equiv").equals("last-modified"))
+			Element item = metas.get(i);
+			if (item.attr("http-equiv").equals("last-modified"))
 			{
-				this.date = item.getAttribute("content");
+				this.date = item.attr("content");
 			}
 		}
 		
@@ -54,22 +46,27 @@ public class HTMLArticle extends Article{
 
 	public String parseAuthor(Document doc)
 	{
-		NodeList nodes = doc.getElementsByTagName("meta");
-		for(int i=0; i<nodes.getLength(); i++)
+		Elements metas = doc.select("meta");
+		for(int i = 0; i < metas.size(); i++)
 		{
-			Element item = (Element) nodes.item(i);
-			if (item.getAttribute("name").equals("author"))
+			Element item = metas.get(i);
+			if (item.attr("name").equals("last-modified"))
 			{
-				this.title = item.getAttribute("content");
+				this.title = item.attr("content");
 			}
 		}
-		
+	
 		return this.title;
 	}
 
 	public Article search(String keyworkds) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public static String parse(String content)
+	{
+		return content.replaceAll("<.[^>]*>", "");
 	}
 
 }

@@ -66,6 +66,23 @@ public class Flow implements Model
 		}
 	}
 	
+	public Article get(int index)
+	{
+		int i = 0;
+		Article find = null;
+		for(Article article: this.articles)
+		{
+			if (0 == index)
+			{
+				find = article;
+				break;
+			}
+			i++;
+		}
+		return find;
+	}
+	
+	
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub

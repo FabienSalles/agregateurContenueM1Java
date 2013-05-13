@@ -9,6 +9,7 @@ public class Main
 	{
 		URLFlow flow = new URLFlow("http://www.smashingmagazine.com/", "html");
 		//URLFlow flow = new URLFlow("http://rss.lemonde.fr/c/205/f/3050/index.rss");
-		flow.displayArticles();
+		//flow.displayArticles();
+		System.out.println(flow.get(0).getContent());
 	}
 }
