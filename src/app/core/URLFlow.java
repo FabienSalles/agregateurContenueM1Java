@@ -111,6 +111,8 @@ public class URLFlow extends Flow implements ArticleRecover
 		org.jsoup.nodes.Document doc = null;
 		try {
 			doc = Jsoup.connect(this.url.toString()).get();
+			//doc.outputSettings().charset("ISO-8859-1");
+//			doc = Jsoup.parse(this.url.openStream(), "UTF-8", this.url.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,9 +123,10 @@ public class URLFlow extends Flow implements ArticleRecover
 			Elements elems = doc.select("article");
 			for (int i = 0; i < elems.size(); i++)
 	        {
+				System.out.println(elems);
 	        	this.articles.add(new HTMLArticle(doc, elems.get(i), this.url.getHost()));
 	        }
-			if (this.articles == null)
+			if (this.articles.size() == 0)
 			{
 				this.articles.add(new HTMLArticle(doc, doc, this.url.getHost()));
 			}

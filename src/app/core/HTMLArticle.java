@@ -1,5 +1,8 @@
 package app.core;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -17,7 +20,15 @@ public class HTMLArticle extends Article{
 			this.author = domain;
 		}
 		this.date = this.parseDate(doc);
+		// @TODO encoding of characters !!!
 		this.content = item.html();
+//		this.content = Charset.forName("UTF-8").encode(item.html()); 
+//		try {
+//			this.content = new String(item.html().getBytes("UTF-8"), "UTF-8");
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	public String parseTitle(Document doc)
