@@ -1,6 +1,7 @@
 package app.article;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,15 +9,26 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import app.database.Query;
+import app.flow.Flow;
+import app.flow.FlowTable;
 
-public class ArticleTable {
+public class ArticleTable
+{
 	
-	public static Set<Article> getArticles() throws SQLException 
+	private Set<Flow> flows;
+	private Connection conn;
+	private static ArticleTable instance;
+	
+	private ArticleTable()
+	{
+		this.conn  = Query.getInstance();
+	}
+	
+	public Set<Article> getArticles() throws SQLException 
 	{
 		Set<Article> articles = new LinkedHashSet<Article>();
 		
-		Connection conn = Query.getInstance();
-		Statement stat = conn.createStatement();
+		Statement stat = this.conn.createStatement();
 		ResultSet rs = stat.executeQuery("SELECT * FROM Articles;");
         
 		while(rs.next())
@@ -34,7 +46,7 @@ public class ArticleTable {
 		return articles;
 	}
 	
-	public static Set<Article> searchArticlesByKeywords(String keywords) throws SQLException
+	public Set<Article> searchArticlesByKeywords(String keywords) throws SQLException
 	{
 		if (keywords.length() < 1)
 			return null;
@@ -58,7 +70,6 @@ public class ArticleTable {
 
 		Set<Article> articles = new LinkedHashSet<Article>();
 		
-		Connection conn = Query.getInstance();
 		Statement stat = conn.createStatement();
         ResultSet rs = stat.executeQuery(query);
         
@@ -76,4 +87,18 @@ public class ArticleTable {
         
 		return articles;
 	}
+	
+	/**
+    * Méthode qui va nous retourner notre instance
+    * et la créer si elle n'existe pas...
+    * @return ArticleTable articletable
+	 * @throws  
+    */
+    public static ArticleTable getInstance()
+    {
+        if (instance == null) {
+        	instance = new ArticleTable();
+        }
+        return instance;    
+    }
 }

@@ -12,24 +12,21 @@ import app.database.Query;
 
 public class FlowTable
 {
-	Set<Flow> flows;
-	Connection conn;
-	Statement stat;
-	ResultSet rs;
-	PreparedStatement prepare;
-	static FlowTable instance;
+	private Set<Flow> flows;
+	private Connection conn;
+	private static FlowTable instance;
 	
-	private FlowTable() throws SQLException
+	private FlowTable()
 	{
-		conn  = Query.getInstance();
-		stat = conn.createStatement();
+		this.conn  = Query.getInstance();
 	}
 	
-	public Set<Flow> getFlow()
+	public Set<Flow> getFlow() throws SQLException
 	{
-		flows = new LinkedHashSet();
+		Statement stat = this.conn.createStatement();
+		this.flows = new LinkedHashSet();
         try {
-			rs = stat.executeQuery("SELECT * FROM Flow;");
+        	ResultSet rs = stat.executeQuery("SELECT * FROM Flow;");
 			while(rs.next())
 	    	{
 	    		this.addFlow(rs);
@@ -45,13 +42,14 @@ public class FlowTable
 	public Set<Flow> getFlowByType(String type)
 	{
 		flows = new LinkedHashSet();
+		PreparedStatement prepare;
 		try {
 			prepare = Query
 				.getInstance()
 				.prepareStatement("SELECT * FROM flow WHERE type = ?;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)
 			;
 			prepare.setString(1, type);
-        	rs = prepare.executeQuery();
+			ResultSet rs = prepare.executeQuery();
         
         	while(rs.next())
         	{
@@ -86,20 +84,13 @@ public class FlowTable
 	/**
     * Méthode qui va nous retourner notre instance
     * et la créer si elle n'existe pas...
-    * @return Connection connect
+    * @return FlowTable flowtable
 	 * @throws  
     */
     public static FlowTable getInstance()
     {
         if (instance == null) {
-             try
-             {
-				instance = new FlowTable();
-             }
-             catch (SQLException e)
-             {
-				e.printStackTrace();
-			}
+        	instance = new FlowTable();
         }
         return instance;    
     }
