@@ -8,16 +8,28 @@ import java.util.Scanner;
 import app.core.exception.UnknownTypeException;
 import app.flow.Flow;
 import app.flow.FlowTable;
+import app.flow.FlowType;
 import app.flow.HTMLFlow;
+import app.flow.MarkdownFlow;
 import app.flow.RSSFlow;
-import app.flow.URLFlow;
 
 public class Main 
 {
 	public static void main(String args[])
-	{
-		RSSFlow flow = new RSSFlow("http://rss.lemonde.fr/c/205/f/3050/index.rss");
-		flow.displayArticles();
+	{		
+		View v = new View();
+		Scanner s = new Scanner(System.in);
+
+		v.welcomeView();
+//		
+		while (v.getCurrentState() != 5) {
+			v.printView();
+			int i = s.nextInt();
+			v.setCurrentState(i);
+		}
+//		
+//		RSSFlow flow = new RSSFlow("http://rss.lemonde.fr/c/205/f/3050/index.rss");
+//		flow.displayArticles();
 //		Set<Flow> flows = FlowTable.getInstance().getFlow();
 //		
 //		for(Flow flow : flows)
@@ -31,15 +43,6 @@ public class Main
 //		System.out.println(flow.get(0).getContent());
 //		View v = new View();
 //		
-//		Scanner s = new Scanner(System.in);
-//		
-//		v.welcomeView();
-//		
-//		while (v.getCurrentState() != 5) {
-//			v.printView();
-//			int i = s.nextInt();
-//			v.setCurrentState(i);
-//		}
 //		
 //		System.out.println("Now Exiting...");
 		
