@@ -40,11 +40,6 @@ public class Flow implements Model
 	protected String path;
 	
 	/**
-	 *  Chemin du flux
-	 */
-	protected URL url;
-	
-	/**
 	 * @constructor
 	 */
 	public Flow()
@@ -52,10 +47,10 @@ public class Flow implements Model
 		this.articles = new LinkedHashSet();
 	}
 	
-	public Flow(String url)
+	public Flow(String path)
 	{
 		this();
-		this.setPath(url);
+		this.setPath(path);
 	}
 	
 	/**
@@ -105,11 +100,6 @@ public class Flow implements Model
 
 	public void setPath(String path)
 	{
-		try {
-			this.url = new URL(path);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
 		this.path = path;
 	}
 

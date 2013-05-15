@@ -1,5 +1,7 @@
 package app.flow;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,10 +73,10 @@ public class FlowTable
 			switch(FlowType.getName(rs.getString("type").trim().toLowerCase()))
 			{
 				case HTML:
-					flows.add(new HTMLFlow(rs.getString("path")));
+					flows.add(new HTMLFlow(new URL(rs.getString("path"))));
 					break;
 				case RSS:
-					flows.add(new RSSFlow(rs.getString("path")));
+					flows.add(new RSSFlow(new URL(rs.getString("path"))));
 					break;
 				case FOLDER:
 					flows.add(new FolderFlow(rs.getString("path")));
@@ -83,6 +85,9 @@ public class FlowTable
 					break;
 			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
