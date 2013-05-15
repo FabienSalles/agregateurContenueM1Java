@@ -1,9 +1,8 @@
-package app.core;
+package app.flow;
 
 import java.util.Set;
 
-import app.model.Article;
-import app.model.Flow;
+import app.article.Article;
 
 public class SQLiteFlow extends Flow implements ArticleRecover
 {
@@ -19,11 +18,4 @@ public class SQLiteFlow extends Flow implements ArticleRecover
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String recoverType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -5,15 +5,19 @@ import java.util.Set;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import app.core.URLFlow;
 import app.core.exception.UnknownTypeException;
-import app.model.Flow;
-import app.model.FlowTable;
+import app.flow.Flow;
+import app.flow.FlowTable;
+import app.flow.HTMLFlow;
+import app.flow.RSSFlow;
+import app.flow.URLFlow;
 
 public class Main 
 {
 	public static void main(String args[])
 	{
+		RSSFlow flow = new RSSFlow("http://rss.lemonde.fr/c/205/f/3050/index.rss");
+		flow.displayArticles();
 //		Set<Flow> flows = FlowTable.getInstance().getFlow();
 //		
 //		for(Flow flow : flows)
@@ -25,19 +29,19 @@ public class Main
 //		flow.save();
 //		flow.displayArticles();
 //		System.out.println(flow.get(0).getContent());
-		View v = new View();
-		
-		Scanner s = new Scanner(System.in);
-		
-		v.welcomeView();
-		
-		while (v.getCurrentState() != 5) {
-			v.printView();
-			int i = s.nextInt();
-			v.setCurrentState(i);
-		}
-		
-		System.out.println("Now Exiting...");
+//		View v = new View();
+//		
+//		Scanner s = new Scanner(System.in);
+//		
+//		v.welcomeView();
+//		
+//		while (v.getCurrentState() != 5) {
+//			v.printView();
+//			int i = s.nextInt();
+//			v.setCurrentState(i);
+//		}
+//		
+//		System.out.println("Now Exiting...");
 		
 		//URLFlow flow = new URLFlow("http://www.eric-pidoux.com/actu/jsoup-parser-simplement-du-html-en-java", "html");
 		//URLFlow flow = new URLFlow("http://rss.lemonde.fr/c/205/f/3050/index.rss");

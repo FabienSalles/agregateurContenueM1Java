@@ -1,4 +1,4 @@
-package app.core;
+package app.database;
 
 import java.io.IOException;
 import java.sql.Connection;

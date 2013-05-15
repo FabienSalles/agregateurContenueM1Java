@@ -5,10 +5,10 @@ import java.util.Scanner;
 import java.util.Set;
 
 import test.model.FlowTableTest;
-import app.model.Article;
-import app.model.ArticleTable;
-import app.model.Flow;
-import app.model.FlowTable;
+import app.article.Article;
+import app.article.ArticleTable;
+import app.flow.Flow;
+import app.flow.FlowTable;
 
 public class View
 {

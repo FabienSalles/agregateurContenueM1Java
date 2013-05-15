@@ -1,4 +1,4 @@
-package app.model;
+package app.flow;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,7 @@ import java.sql.Statement;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import app.core.Query;
-import app.core.URLFlow;
+import app.database.Query;
 
 public class FlowTable
 {
@@ -77,6 +76,8 @@ public class FlowTable
 			case "php":
 				flows.add(new URLFlow(rs.getString("path"), rs.getString("type")));
 				break;
+			case "folder":
+				flows.add(new FolderFlow(rs.getString("path")));
 			default:
 				break;
 		}

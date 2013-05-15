@@ -1,12 +1,16 @@
-package app.model;
+package app.flow;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import app.core.Query;
+import app.article.Article;
+import app.database.Model;
+import app.database.Query;
 
 public class Flow implements Model
 {
@@ -34,6 +38,12 @@ public class Flow implements Model
 	 * Path of the flow
 	 */
 	protected String path;
+	
+	/**
+	 *  Chemin du flux
+	 */
+	protected URL url;
+	
 	/**
 	 * @constructor
 	 */
@@ -42,10 +52,10 @@ public class Flow implements Model
 		this.articles = new LinkedHashSet();
 	}
 	
-	public Flow(String type)
+	public Flow(String url)
 	{
 		this();
-		this.type = type;
+		this.setPath(url);
 	}
 	
 	/**
@@ -88,16 +98,6 @@ public class Flow implements Model
 		this.rowid = rowid;
 	}
 
-	public PreparedStatement getPrepare()
-	{
-		return prepare;
-	}
-
-	public void setPrepare(PreparedStatement prepare)
-	{
-		this.prepare = prepare;
-	}
-
 	public String getPath()
 	{
 		return path;
@@ -105,6 +105,11 @@ public class Flow implements Model
 
 	public void setPath(String path)
 	{
+		try {
+			this.url = new URL(path);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		this.path = path;
 	}
 
@@ -132,6 +137,23 @@ public class Flow implements Model
 		return find;
 	}
 	
+	public boolean remove(int index)
+	{
+		int i = 0;
+		boolean delete = false;
+		for(Article article: this.articles)
+		{
+			if (i == index)
+			{
+				article.delete();
+				delete = this.articles.remove(article);
+				break;
+			}
+			i++;
+		}
+		return delete;
+	}
+	
 	
 	@Override
 	public void save()
@@ -141,8 +163,7 @@ public class Flow implements Model
 			this.prepare.setString(1, this.path);
 			this.prepare.setString(2,  this.type);
 			this.prepare.executeUpdate();
-			ResultSet rs = this.prepare.getGeneratedKeys();
-			this.rowid = rs.getInt(1);
+			this.rowid = this.prepare.getGeneratedKeys().getInt(1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

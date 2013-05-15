@@ -1,4 +1,4 @@
-package app.core;
+package app.flow;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,17 +21,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import app.article.Article;
+import app.article.HTMLArticle;
+import app.article.XMLArticle;
 import app.core.exception.UnknownTypeException;
-import app.model.Article;
-import app.model.Flow;
 
 public class URLFlow extends Flow implements ArticleRecover
-{
-	/**
-	 *  Chemin du flux
-	 */
-	protected URL url;
-	
+{	
 	public URLFlow(String url)
 	{
 		super();
@@ -63,8 +59,6 @@ public class URLFlow extends Flow implements ArticleRecover
 			e.printStackTrace();
 		}
 	}
-	
-	
 	
 	@Override
 	public void recover()
@@ -154,9 +148,6 @@ public class URLFlow extends Flow implements ArticleRecover
 		return null;
 	}
 
-
-
-	@Override
 	public String recoverType() throws UnknownTypeException {
 		
 		if (this.type == null)

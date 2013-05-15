@@ -1,11 +1,10 @@
-package app.core;
+package app.article;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import app.model.Article;
 
-public class XMLArticle extends Article implements ArticleParser
+public class XMLArticle extends Article implements ArticleSearch
 {
 	public XMLArticle(Node item)
 	{
@@ -32,36 +31,6 @@ public class XMLArticle extends Article implements ArticleParser
 				this.date = child.getTextContent();
 			}	
 		}
-	}
-
-	@Override
-	public void parse(String article) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String parseTitle() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String parseContent() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String parseDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String parseAuthor() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

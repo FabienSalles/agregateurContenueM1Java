@@ -1,4 +1,4 @@
-package app.model;
+package app.article;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import app.core.Query;
+import app.database.Query;
 
 public class ArticleTable {
 	
@@ -19,16 +19,17 @@ public class ArticleTable {
 		Statement stat = conn.createStatement();
 		ResultSet rs = stat.executeQuery("SELECT * FROM Articles;");
         
-		while(rs.next()) {
-            		Article a = new Article();
-        	
-        			a.setTitle(rs.getString("title"));
-        			a.setContent(rs.getString("content"));
-            		a.setAuthor(rs.getString("author"));
-            		a.setDate(rs.getString("date"));
-            
-            		articles.add(a);
-	        }
+		while(rs.next())
+		{
+    		Article a = new Article();
+	
+			a.setTitle(rs.getString("title"));
+			a.setContent(rs.getString("content"));
+    		a.setAuthor(rs.getString("author"));
+    		a.setDate(rs.getString("date"));
+    
+    		articles.add(a);
+	    }
         
 		return articles;
 	}
@@ -61,7 +62,8 @@ public class ArticleTable {
 		Statement stat = conn.createStatement();
         ResultSet rs = stat.executeQuery(query);
         
-        while(rs.next()) {
+        while(rs.next())
+        {
             Article a = new Article();
         	
         	a.setTitle(rs.getString("title"));

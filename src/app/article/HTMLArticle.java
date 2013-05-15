@@ -1,15 +1,11 @@
-package app.core;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
+package app.article;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import app.model.Article;
 
-public class HTMLArticle extends Article{
+public class HTMLArticle extends Article implements ArticleSearch{
 
 	protected Element content;
 	
