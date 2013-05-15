@@ -19,7 +19,8 @@ public class FolderFlow extends Flow implements ArticleRecover
 	
 	@Override
 	public void recover() {
-		
+		File[] files = this.listFiles(this.path);
+		System.out.println(files);
 		
 	}
 	

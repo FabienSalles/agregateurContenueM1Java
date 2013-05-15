@@ -67,7 +67,8 @@ public class FlowTable
 	private void addFlow(ResultSet rs)
 	{
 		try {
-			switch(FlowType.valueOf(rs.getString("type").trim().toLowerCase()))
+			//System.out.println(FlowType.valueOf(rs.getString("type").trim().toLowerCase()));
+			switch(FlowType.getName(rs.getString("type").trim().toLowerCase()))
 			{
 				case HTML:
 					flows.add(new HTMLFlow(rs.getString("path")));
