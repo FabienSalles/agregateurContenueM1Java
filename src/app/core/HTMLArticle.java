@@ -11,6 +11,8 @@ import app.model.Article;
 
 public class HTMLArticle extends Article{
 
+	protected Element content;
+	
 	public HTMLArticle(Document doc, Element item, String domain)
 	{
 		this.parseTitle(doc);
@@ -20,15 +22,7 @@ public class HTMLArticle extends Article{
 			this.author = domain;
 		}
 		this.date = this.parseDate(doc);
-		// @TODO encoding of characters !!!
-		this.content = item.html();
-//		this.content = Charset.forName("UTF-8").encode(item.html()); 
-//		try {
-//			this.content = new String(item.html().getBytes("UTF-8"), "UTF-8");
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		this.content = item;
 	}
 
 	public String parseTitle(Document doc)
@@ -38,7 +32,7 @@ public class HTMLArticle extends Article{
 
 	public String getContent()
 	{
-		return HTMLArticle.parse(this.content);
+		return this.content.text(); //HTMLArticle.parse(this.content.html()));
 	}
 
 	public String parseDate(Document doc) {

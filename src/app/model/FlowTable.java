@@ -30,7 +30,7 @@ public class FlowTable
 	{
 		flows = new LinkedHashSet();
         try {
-			rs = stat.executeQuery("SELECT * FROM Flows;");
+			rs = stat.executeQuery("SELECT * FROM Flow;");
 			while(rs.next())
 	    	{
 	    		this.addFlow(rs);
@@ -49,7 +49,7 @@ public class FlowTable
 		try {
 			prepare = Query
 				.getInstance()
-				.prepareStatement("SELECT * FROM Flows WHERE type = ?;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)
+				.prepareStatement("SELECT * FROM flow WHERE type = ?;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)
 			;
 			prepare.setString(1, type);
         	rs = prepare.executeQuery();
@@ -72,12 +72,16 @@ public class FlowTable
 		switch(rs.getString("type"))
 		{
 			case "rss":
+			case "html":
+			case "htm":
+			case "php":
 				flows.add(new URLFlow(rs.getString("path"), rs.getString("type")));
 				break;
 			default:
 				break;
 		}
 	}
+    
 	/**
     * Méthode qui va nous retourner notre instance
     * et la créer si elle n'existe pas...

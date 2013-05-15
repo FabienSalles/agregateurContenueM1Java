@@ -49,6 +49,7 @@ public class URLFlow extends Flow implements ArticleRecover
 		try 
 		{
 			this.url = new URL(url);
+			this.path = url;
 			this.recoverType();
 			this.recover();
 	    }
@@ -110,11 +111,8 @@ public class URLFlow extends Flow implements ArticleRecover
 	{
 		org.jsoup.nodes.Document doc = null;
 		try {
-			doc = Jsoup.connect(this.url.toString()).get();
-			//doc.outputSettings().charset("ISO-8859-1");
-//			doc = Jsoup.parse(this.url.openStream(), "UTF-8", this.url.toString());
+			doc = Jsoup.connect(this.path).get();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -128,12 +126,12 @@ public class URLFlow extends Flow implements ArticleRecover
 	        }
 			if (this.articles.size() == 0)
 			{
-				this.articles.add(new HTMLArticle(doc, doc, this.url.getHost()));
+				this.articles.add(new HTMLArticle(doc, doc.select("body").get(0), this.url.getHost()));
 			}
 		}
 	}
 
-    /**
+	/**
      * Afficher une Date GML au format francais
      * @param gmtDate
      * @return
@@ -149,7 +147,7 @@ public class URLFlow extends Flow implements ArticleRecover
         }
         return "";
     }
-	
+    
 	@Override
 	public Set<Article> search(String keyworkds) {
 		// TODO Auto-generated method stub
@@ -163,7 +161,7 @@ public class URLFlow extends Flow implements ArticleRecover
 		
 		if (this.type == null)
 		{
-			String str[] = url.getFile().split("\\.");
+			String str[] = this.url.getFile().split("\\.");
 			
 			if (str.length==1)
 			{
