@@ -21,11 +21,11 @@ public class FlowTable
 		this.conn  = Query.getInstance();
 	}
 	
-	public Set<Flow> getFlow() throws SQLException
+	public Set<Flow> getFlow()
 	{
-		Statement stat = this.conn.createStatement();
 		this.flows = new LinkedHashSet();
         try {
+        	Statement stat = this.conn.createStatement();
         	ResultSet rs = stat.executeQuery("SELECT * FROM Flow;");
 			while(rs.next())
 	    	{
@@ -64,20 +64,26 @@ public class FlowTable
 		return flows;
 	}
 	
-	private void addFlow(ResultSet rs) throws SQLException
+	private void addFlow(ResultSet rs)
 	{
-		switch(rs.getString("type"))
-		{
-			case "rss":
-			case "html":
-			case "htm":
-			case "php":
-				flows.add(new URLFlow(rs.getString("path"), rs.getString("type")));
-				break;
-			case "folder":
-				flows.add(new FolderFlow(rs.getString("path")));
-			default:
-				break;
+		try {
+			switch(FlowType.valueOf(rs.getString("type").trim().toLowerCase()))
+			{
+				case HTML:
+					flows.add(new HTMLFlow(rs.getString("path")));
+					break;
+				case RSS:
+					flows.add(new RSSFlow(rs.getString("path")));
+					break;
+				case FOLDER:
+					flows.add(new FolderFlow(rs.getString("path")));
+					break;
+				default:
+					break;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
     

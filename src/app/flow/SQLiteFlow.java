@@ -1,15 +1,22 @@
 package app.flow;
 
+import java.sql.SQLException;
 import java.util.Set;
 
 import app.article.Article;
+import app.article.ArticleTable;
 
 public class SQLiteFlow extends Flow implements ArticleRecover
 {
 	@Override
 	public void recover()
 	{
-		// TODO Auto-generated method stub
+		try {
+			this.articles = ArticleTable.getInstance().getArticles();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

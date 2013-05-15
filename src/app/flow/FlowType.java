@@ -3,7 +3,9 @@ package app.flow;
 public enum FlowType {
 	HTML("html"),
 	RSS("rss"),
-	MarkDown("md");
+	MarkDown("md"),
+	FOLDER("dossier"),
+	DATABASE("bdd");
 	
 	private String type;
 	

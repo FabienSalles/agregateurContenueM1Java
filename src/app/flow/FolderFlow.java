@@ -1,5 +1,6 @@
 package app.flow;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Set;
 
@@ -12,15 +13,24 @@ public class FolderFlow extends Flow implements ArticleRecover
 	public FolderFlow(String url)
 	{
 		super(url);
+		this.type = FlowType.FOLDER;
 		this.recover();
 	}
 	
 	@Override
 	public void recover() {
-		// TODO Auto-generated method stub
+		
 		
 	}
-
+	
+	public File[] listFiles(String path)
+	{ 
+		File[] files = null; 
+		File directoryToScan = new File(path); 
+		files = directoryToScan.listFiles(); 
+		return files; 
+	}
+	
 	@Override
 	public Set<Article> search(String keyworkds) {
 		// TODO Auto-generated method stub

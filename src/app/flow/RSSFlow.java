@@ -42,11 +42,11 @@ public class RSSFlow extends Flow implements ArticleRecover
         	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			doc = builder.parse(this.url.openStream());
 		} catch (SAXException ex) {
-			Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(RSSFlow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSSFlow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {
-            Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSSFlow.class.getName()).log(Level.SEVERE, null, ex);
         }
 		
 		if (doc != null)
@@ -71,7 +71,7 @@ public class RSSFlow extends Flow implements ArticleRecover
             SimpleDateFormat dfFrench = new SimpleDateFormat("EEEE, d MMMM yyyy HH:mm:ss", Locale.FRANCE);
             return dfFrench.format(dfGMT.getCalendar().getTime());
         } catch (ParseException ex) {
-            Logger.getLogger(URLFlow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSSFlow.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "";
     }
