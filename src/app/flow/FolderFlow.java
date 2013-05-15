@@ -1,15 +1,18 @@
 package app.flow;
 
+import java.net.URL;
 import java.util.Set;
 
 import app.article.Article;
+import app.core.exception.UnknownTypeException;
 
 public class FolderFlow extends Flow implements ArticleRecover
 {
 
-	public FolderFlow(String string)
+	public FolderFlow(String url)
 	{
-		// TODO Auto-generated constructor stub
+		super(url);
+		this.recover();
 	}
 	
 	@Override
@@ -24,4 +27,15 @@ public class FolderFlow extends Flow implements ArticleRecover
 		return null;
 	}
 	
+    public String recoverType(URL url) throws UnknownTypeException {
+		
+		String str[] = url.getFile().split("\\.");
+		
+		if (str.length==1)
+		{
+			throw new UnknownTypeException("type missing");
+		}
+
+		return str[str.length-1];
+	}
 }

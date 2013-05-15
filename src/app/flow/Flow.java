@@ -32,7 +32,7 @@ public class Flow implements Model
 	/**
 	 * Type du flux pour la BDD
 	 */
-	protected String type;
+	protected FlowType type;
 	
 	/**
 	 * Path of the flow
@@ -77,12 +77,12 @@ public class Flow implements Model
 	}
 	
 	
-	public String getType()
+	public FlowType getType()
 	{
 		return type;
 	}
 
-	public void setType(String type)
+	public void setType(FlowType type)
 	{
 		this.type = type;
 	}
@@ -161,7 +161,7 @@ public class Flow implements Model
 		try {
 			this.prepare = Query.getInstance().prepareStatement("INSERT INTO flow (path, type) values (?, ?)");
 			this.prepare.setString(1, this.path);
-			this.prepare.setString(2,  this.type);
+			this.prepare.setString(2,  this.type.getType());
 			this.prepare.executeUpdate();
 			this.rowid = this.prepare.getGeneratedKeys().getInt(1);
 		} catch (SQLException e) {
@@ -179,7 +179,7 @@ public class Flow implements Model
 			try {
 				this.prepare = Query.getInstance().prepareStatement("update flow SET path=?, type=? where rowid=?");
 				this.prepare.setString(1, this.path);
-				this.prepare.setString(2,  this.type);
+				this.prepare.setString(2,  this.type.getType());
 				this.prepare.setInt(3, this.rowid);
 				this.prepare.executeUpdate();
 			} catch (SQLException e) {
