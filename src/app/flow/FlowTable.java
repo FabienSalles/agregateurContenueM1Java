@@ -1,5 +1,6 @@
 package app.flow;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
@@ -36,7 +37,7 @@ public class FlowTable
 		this.flows = new LinkedHashSet();
         try {
         	Statement stat = this.conn.createStatement();
-        	ResultSet rs = stat.executeQuery("SELECT * FROM Flow;");
+        	ResultSet rs = stat.executeQuery("SELECT rowid, type, path FROM Flow;");
 			while(rs.next())
 	    	{
 	    		this.addFlow(rs);
@@ -66,12 +67,14 @@ public class FlowTable
 			prepare.setString(1, type);
 			ResultSet rs = prepare.executeQuery();
         
+			// add flow in table
         	while(rs.next())
         	{
         		this.addFlow(rs);
         	}
+        	// add sqlite flow
+        	flows.add(new SQLiteFlow());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -86,21 +89,37 @@ public class FlowTable
 	private void addFlow(ResultSet rs)
 	{
 		try {
-			//System.out.println(FlowType.valueOf(rs.getString("type").trim().toLowerCase()));
+			String typeofPath = this.getTypeOfPath(rs.getString("path"));
+			Flow flow = null;
 			switch(FlowType.getName(rs.getString("type").trim().toLowerCase()))
 			{
 				case HTML:
-					flows.add(new HTMLFlow(new URL(rs.getString("path"))));
+					if (typeofPath.equals("url"))
+					{
+						flow = new HTMLFlow(rs.getInt("rowid"), new URL(rs.getString("path")));
+					}
+					else
+					{
+						flow = new HTMLFlow(rs.getInt("rowid"), new File(rs.getString("path")));
+					}
 					break;
 				case RSS:
-					flows.add(new RSSFlow(new URL(rs.getString("path"))));
+					if (typeofPath.equals("url"))
+					{
+						flow = new RSSFlow(rs.getInt("rowid"), new URL(rs.getString("path")));
+					}
+					else
+					{
+						flow = new RSSFlow(rs.getInt("rowid"), new File(rs.getString("path")));
+					}
 					break;
 				case FOLDER:
-					flows.add(new FolderFlow(rs.getString("path")));
+					flow = new FolderFlow(rs.getInt("rowid"), rs.getString("path"));
 					break;
 				default:
 					break;
 			}
+			flows.add(flow);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,6 +129,15 @@ public class FlowTable
 		}
 	}
     
+	public String getTypeOfPath(String path)
+	{
+		if (path.startsWith("http"))
+		{
+			return "url";
+		}
+		return "file";
+	}
+	
 	/**
     * Méthode qui va nous retourner notre instance
     * et la créer si elle n'existe pas...

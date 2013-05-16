@@ -17,6 +17,12 @@ public class FolderFlow extends Flow implements ArticleRecover
 		this.recover();
 	}
 	
+	public FolderFlow(Integer rowid, String path)
+	{
+		this(path);
+		this.rowid = rowid;		
+	}
+	
 	@Override
 	public void recover()
 	{

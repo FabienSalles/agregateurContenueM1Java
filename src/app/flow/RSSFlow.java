@@ -43,16 +43,28 @@ public class RSSFlow extends Flow implements ArticleRecover
 	
 	public RSSFlow(URL url)
 	{
-		super(url.getPath());
+		super(url.getPath(), FlowType.RSS);
 		this.setUrl(url);
 		this.recover();
 	}
 	
 	public RSSFlow(File file)
 	{
-		super(file.getAbsolutePath());
+		super(file.getAbsolutePath(), FlowType.RSS);
 		this.setFile(file);
 		this.recover();
+	}
+	
+	public RSSFlow(Integer rowid, File file)
+	{
+		this(file);
+		this.rowid = rowid;		
+	}
+	
+	public RSSFlow(Integer rowid, URL url)
+	{
+		this(url);
+		this.rowid = rowid;		
 	}
 	
 	public void setUrl(URL url)

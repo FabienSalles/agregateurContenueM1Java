@@ -38,16 +38,28 @@ public class HTMLFlow extends Flow implements ArticleRecover
 	
 	public HTMLFlow(URL url)
 	{
-		super(url.getPath());
+		super(url.getPath(), FlowType.HTML);
 		this.setUrl(url);
 		this.recover();
 	}
 	
 	public HTMLFlow(File file)
 	{
-		super(file.getAbsolutePath());
+		super(file.getAbsolutePath(), FlowType.HTML);
 		this.setFile(file);
 		this.recover();
+	}
+	
+	public HTMLFlow(Integer rowid, File file)
+	{
+		this(file);
+		this.rowid = rowid;		
+	}
+	
+	public HTMLFlow(Integer rowid, URL url)
+	{
+		this(url);
+		this.rowid = rowid;		
 	}
 	
 	public void setUrl(URL url)

@@ -53,6 +53,18 @@ public class Flow implements Model
 		this.setPath(path);
 	}
 	
+	public Flow(String path, FlowType type)
+	{
+		this(path);
+		this.type = type;
+	}
+	
+	public Flow(Integer rowid, String path, FlowType type)
+	{
+		this(path, type);
+		this.rowid = rowid;
+	}
+	
 	/**
 	 * getArticles
 	 * @return set<Article>
@@ -156,7 +168,6 @@ public class Flow implements Model
 		}
 		return delete;
 	}
-	
 	/**
 	 * Save article in the database
 	 */
@@ -195,6 +206,7 @@ public class Flow implements Model
 		if (this.rowid != null)
 		{
 			try {
+				System.out.println(this.path + " " + this.rowid);
 				this.prepare = Query.getInstance().prepareStatement("update flow SET path=?, type=? where rowid=?");
 				this.prepare.setString(1, this.path);
 				this.prepare.setString(2,  this.type.getType());
