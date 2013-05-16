@@ -146,8 +146,12 @@ public class Article implements Model
 
 	@Override
 	public String toString() {
-		return "Article [title=" + title + ", date=" + date + ", author="
-				+ author + "]";
+		return "Article [" +
+				"\n\ttitle   : " + title + 
+				"\n\tdate    : " + date + 
+				"\n\tcontent : " + content +
+				"\n\tauthor  : " + author + 
+				"\n]";
 	}
 	
 	

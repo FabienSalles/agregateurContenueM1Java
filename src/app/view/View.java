@@ -246,15 +246,9 @@ public class View
 		for (Flow f : this.flows) {
 			articles.addAll(f.search(str));
 		}
-		
-		if (articles != null) {
-			articleView(articles);
-		}
-	}
-	
-	private void articleView(Set<Article> articles) {
+
 		for (Article a : articles) {
-			a.toString();
+			System.out.println(a);
 		}
 	}
 	
@@ -277,6 +271,10 @@ public class View
 	
 	public void setCurrentState(int i) {
 		this.currentState = i;
+	}
+	
+	private void generateReport() {
+		
 	}
 	
 	private String getTypeOfPath(String path)

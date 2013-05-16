@@ -25,7 +25,7 @@ public class SQLiteFlow extends Flow
 	}
 
 	@Override
-	public Set<Article> search(String keyworkds) {
-		return this.articles;
+	public Set<Article> search(String keywords) {
+		return super.search(keywords);
 	}
 }

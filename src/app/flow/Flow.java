@@ -295,9 +295,17 @@ public class Flow implements Model, ArticleRecover
 	}
 
 	@Override
-	public Set<Article> search(String keyworkds) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Article> search(String keywords) {
+		Set<Article> art = new LinkedHashSet<Article>();
+		for (Article a : this.articles) {
+			for (String s : keywords.split(" ")) {
+				if (a.getTitle().contains(s) || a.getContent().contains(s)) {
+					art.add(a);
+					break;
+				}
+			}
+		}
+		return art;
 	}
 	
 }
