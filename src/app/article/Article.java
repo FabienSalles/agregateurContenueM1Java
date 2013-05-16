@@ -149,7 +149,7 @@ public class Article implements Model
 		return "Article [" +
 				"\n\ttitle   : " + title + 
 				"\n\tdate    : " + date + 
-				"\n\tcontent : " + content +
+				"\n\tcontent : " + this.getContent() +
 				"\n\tauthor  : " + author + 
 				"\n]";
 	}
@@ -158,7 +158,7 @@ public class Article implements Model
 		return "<article>" +
 				"<h4>" + title + "</h4><br />" +
 				"<p><b>date    : </b>" + date + "</p>" +
-				"<p><b>content : </b>" + content + "</p>" + 
+				"<p><b>content : </b>" + this.getContent() + "</p>" + 
 				"<p><b>author  : </b>" + author + "</p>" +
 				"</article>";
 	}

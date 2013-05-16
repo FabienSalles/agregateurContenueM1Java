@@ -1,5 +1,6 @@
 package app.view;
 
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -153,42 +154,20 @@ public class View
 		System.out.println("(Modify View) Modify Flow :");
 		
 		if (this.flows.size() > 0) {
-			int i = 0;
-			for (Flow f: this.flows) {
-				System.out.println(i + ") " + f.getPath());
-				i++;
-			}
+			this.displayFlows();
 			
 			System.out.print("Enter the number of the flow to edit -> ");
 			int value = Integer.parseInt(scanner.next());
-			
-			i = 0;
-			for (Flow f: this.flows) {
-				if (i == value) {
-					System.out.println(f.getPath());
-					break;
-				}
-				i++;
-			}
-			
+			System.out.print("Enter the new Url -> ");
 			String newPath = scanner.next();
 			System.out.println(newPath);
 			
-			i = 0;
-			for (Flow f: this.flows) {
-				if (i == value) {
-					f.setPath(newPath);
-					f.recover();
-					f.update();
-				}
-				i++;
-			}
+			Flow f = this.getFlow(value);
+			f.setPath(newPath);
+			f.recover();
+			f.update();
 			
-			i = 0;
-			for (Flow f: this.flows) {
-				System.out.println(i + ") " + f.getPath());
-				i++;
-			}
+			this.displayFlows();
 			
 		} else {
 			System.out.println("No flow to modify.");
@@ -202,33 +181,45 @@ public class View
 		this.flows = ft.getFlow();
 		
 		if (this.flows.size() > 0) {
-			int i = 0;
-			for (Flow flow: this.flows) {
-				System.out.println(i + ") " + flow.getPath());
-				i++;
-			}
+			this.displayFlows();
 			System.out.println("Enter the number of the flow to delete ->");
 		
 			int value = Integer.parseInt(scanner.next());
 			
-			i = 0;
-			for (Flow flow: this.flows) {
-				if (i == value)
-					if (flow.getRowid() != null)
-						flow.delete();
-					this.flows.remove(flow);
-				i++;
-			}
+			Flow flow = this.getFlow(value);
+			if (flow.getRowid() != null)
+				flow.delete();
+			this.flows.remove(flow);
 			
-			i = 0;
-			for (Flow flow: this.flows) {
-				System.out.println(i + ") " + flow.getPath());
-				i++;
-			}
+			this.displayFlows();
 			
 		} else {
 			System.out.println("No flow to delete.");
 		}
+	}
+	
+	public void displayFlows()
+	{
+		int i = 0;
+		for (Flow f: this.flows) {
+			System.out.println(i + ") " + f.getPath());
+			i++;
+		}
+	}
+	
+	public Flow getFlow(int index)
+	{
+		int i = 0;
+		Flow find = null;
+		for (Flow f: this.flows) {
+			if (i == index) {
+				find = f;
+				break;
+			}
+			i++;
+		}
+		return find;
+		
 	}
 	
 	private void searchView() {
@@ -248,10 +239,16 @@ public class View
 		for (Flow f : this.flows) {
 			articles.addAll(f.search(str));
 		}
-
-		for (Article a : articles) {
-			System.out.println(a);
+		
+		try {
+			this.generateReport(articles);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+//		for (Article a : articles) {
+//			System.out.println(a);
+//		}
 	}
 	
 	private void quitView() {
@@ -275,11 +272,21 @@ public class View
 		this.currentState = i;
 	}
 	
-	private void generateReport() throws Exception {
-		File f = new File("report.html");
-		
+	private void generateReport(Set<Article> articles) throws Exception {
+		File f = new File("data/rapport/report_"+System.currentTimeMillis()+".html");
+
 		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
-		bw.write("<html>")
+		bw.write("<html><body>");
+		bw.write("<h1>Rapport "+System.currentTimeMillis()+"</h1>");
+		for( Article article : articles)
+		{
+			bw.write(article.toHtml());
+		}
+		bw.write("</body></html>");
+		
+		bw.close();
+		
+		Desktop.getDesktop().browse(f.toURI());
 	}
 	
 	private String getTypeOfPath(String path)

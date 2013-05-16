@@ -271,7 +271,7 @@ public class Flow implements Model, ArticleRecover
 		if (this.rowid != null)
 		{
 			try {
-				this.prepare = Query.getInstance().prepareStatement("DELETE FROM flow SET where rowid=?");
+				this.prepare = Query.getInstance().prepareStatement("DELETE FROM flow where rowid=?");
 				this.prepare.setInt(1, this.rowid);
 				this.prepare.executeUpdate();
 			} catch (SQLException e) {
