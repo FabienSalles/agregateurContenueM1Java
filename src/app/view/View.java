@@ -1,6 +1,12 @@
 package app.view;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.sql.SQLException;
+import java.util.EnumSet;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -20,15 +26,16 @@ public class View
 	private final int MODIFY = 2;
 	private final int DELETE = 3;
 	private final int SEARCH = 4;
+	private final int QUIT = 5;
 	
 	private Set<Flow> flows;
-	private ArticleTable articles;
+	private ArticleTable articleTable;
 	
 	public View() {
 		this.currentState = DEFAULT;
 		this.scanner = new Scanner(System.in);
 		this.flows = FlowTable.getInstance().getFlow();
-		this.articles = ArticleTable.getInstance();
+		this.articleTable = ArticleTable.getInstance();
 	}
 	
 	public void printView() {
@@ -44,6 +51,9 @@ public class View
 				break;
 			case SEARCH:
 				searchView();
+				break;
+			case QUIT:
+				quitView();
 				break;
 		}
 		defaultView();
@@ -67,38 +77,76 @@ public class View
 	
 	private void addView() {
 		System.out.println("(Add View) Add Flow :");
-		System.out.println("Type a type of flow to add ->");
-
-		String str = "";
-		while (scanner.hasNextLine() && str == "")
-			str = scanner.nextLine();
-		System.out.println(str);
 		
-		System.out.println("Type a flow to add ->");
-		while (scanner.hasNextLine() && str == "")
-			str = scanner.nextLine();
-		System.out.println(str);
+		String type = "";
+		do {
+			System.out.println("Select a type of flow (case sensitive, EXIT to leave) ->");
+			flowTypeView();
+			type = scanner.next();
+			if (type.equalsIgnoreCase("EXIT"))
+				return;
+		} while (!checkFlowType(type));
+		
+		FlowType ft = FlowType.valueOf(type);
+		
+		System.out.println("Type a flow to add (No space allowed) ->");
+		
+		String flowPath = scanner.next();
 		
 		Flow f = new Flow();
+		f.setType(ft);
+		f.setPath(flowPath);
 		
-		this.flows.add(f);
-		
+		flows.add(f);
 		System.out.println("The flow has been added.");
+	}
+	
+	private void flowTypeView() {
+		for (FlowType ft : FlowType.values())
+			System.out.print(ft.name() + " ");
+		System.out.print("\n");
 	}
 	
 	private void modifyView() {
 		System.out.println("(Modify View) Modify Flow :");
 		
-		
 		if (this.flows.size() > 0) {
 			int i = 0;
-			for (Flow flow: this.flows) {
-				System.out.println(i + ") " + flow.getPath());
+			for (Flow f: this.flows) {
+				System.out.println(i + ") " + f.getPath());
 				i++;
 			}
-			System.out.println("Enter the number of the flow to edit ->");
-		
-			i = scanner.nextInt();
+			
+			System.out.print("Enter the number of the flow to edit -> ");
+			int value = Integer.parseInt(scanner.next());
+			
+			i = 0;
+			for (Flow f: this.flows) {
+				if (i == value) {
+					System.out.println(f.getPath());
+					break;
+				}
+				i++;
+			}
+			
+			String newPath = scanner.next();
+			System.out.println(newPath);
+			
+			i = 0;
+			for (Flow f: this.flows) {
+				if (i == value) {
+					f.setPath(newPath);
+					f.update();
+				}
+				i++;
+			}
+			
+			i = 0;
+			for (Flow f: this.flows) {
+				System.out.println(i + ") " + f.getPath());
+				i++;
+			}
+			
 		} else {
 			System.out.println("No flow to modify.");
 		}
@@ -107,28 +155,32 @@ public class View
 	private void deleteView() {
 		System.out.println("(Delete View) Delete Flow :");
 		
+		FlowTable ft = FlowTable.getInstance();
+		this.flows = ft.getFlow();
+		
 		if (this.flows.size() > 0) {
 			int i = 0;
 			for (Flow flow: this.flows) {
-				System.out.println(flow.getRowid() + ") " + flow.getPath());
+				System.out.println(i + ") " + flow.getPath());
 				i++;
 			}
 			System.out.println("Enter the number of the flow to delete ->");
 		
-			i = scanner.nextInt();
-			int flag = 0;
+			int value = Integer.parseInt(scanner.next());
+			
+			i = 0;
 			for (Flow flow: this.flows) {
-				if (flow.getRowid() == i) {
-					flow.delete();
-					flag = 1;
-					break;
-				}
+				if (i == value)
+					if (flow.getRowid() != null)
+						flow.delete();
+					this.flows.remove(flow);
+				i++;
 			}
 			
-			if (flag == 0) {
-				System.out.println(i + " was not found.");
-			} else {
-				System.out.println(i + " has been deleted.");
+			i = 0;
+			for (Flow flow: this.flows) {
+				System.out.println(i + ") " + flow.getPath());
+				i++;
 			}
 			
 		} else {
@@ -137,6 +189,9 @@ public class View
 	}
 	
 	private void searchView() {
+		FlowTable ft = FlowTable.getInstance();
+		this.flows = ft.getFlow();
+		
 		System.out.println("(Search View) Search Flow :");
 		System.out.println("Enter key words (seperate words with spaces) ->");
 
@@ -145,23 +200,37 @@ public class View
 			str = scanner.nextLine();
 		System.out.println(str);
 		
-		Set<Article> articles;
 		try {
-			articles = this.articles.searchArticlesByKeywords(str);
-			if (this.articles != null) {
+			
+			Set<Article> articles = articleTable.searchArticlesByKeywords(str);
+			
+			if (articles != null) {
 				articleView(articles);
 			} else {
 				System.out.println("No article(s) found.");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 	
 	private void articleView(Set<Article> articles) {
 		for (Article a : articles) {
 			a.toString();
 		}
+	}
+	
+	private void quitView() {
+		System.out.println("Now exiting...");
+		System.exit(127);
+	}
+	
+	private boolean checkFlowType(String str) {
+		for (FlowType ft : FlowType.values()) {
+			if (ft.name().compareTo(str) == 0)
+				return true;
+		}
+		return false;
 	}
 	
 	public int getCurrentState() {

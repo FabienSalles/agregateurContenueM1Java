@@ -1,11 +1,17 @@
 package app.flow;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,12 +32,40 @@ import app.core.exception.UnknownTypeException;
 
 public class RSSFlow extends Flow implements ArticleRecover
 {	
-	public RSSFlow(String url)
+	/**
+	 *  Chemin du flux pour le web
+	 */
+	protected URL url;
+	/**
+	 *  Chemin du flux en local
+	 */
+	protected File file;
+	
+	public RSSFlow(URL url)
 	{
-		super(url);
+		super(url.getPath());
+		this.setUrl(url);
 		this.recover();
 	}
 	
+	public RSSFlow(File file)
+	{
+		super(file.getAbsolutePath());
+		this.setFile(file);
+		this.recover();
+	}
+	
+	public void setUrl(URL url)
+	{
+		this.url = url;
+		this.path = url.getPath();
+	}
+	
+	public void setFile(File file)
+	{
+		this.file = file;
+		this.path = file.getAbsolutePath();
+	}
 	
 	@Override
 	public void recover()
@@ -40,7 +74,15 @@ public class RSSFlow extends Flow implements ArticleRecover
 		
 		try {
         	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			doc = builder.parse(this.url.openStream());
+        	
+        	if (this.url != null)
+        	{
+        		doc = builder.parse(this.url.openStream());
+        	}
+        	else
+        	{
+        		doc = builder.parse(this.file);
+        	}
 		} catch (SAXException ex) {
 			Logger.getLogger(RSSFlow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

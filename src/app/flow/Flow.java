@@ -40,11 +40,6 @@ public class Flow implements Model
 	protected String path;
 	
 	/**
-	 *  Chemin du flux
-	 */
-	protected URL url;
-	
-	/**
 	 * @constructor
 	 */
 	public Flow()
@@ -52,10 +47,10 @@ public class Flow implements Model
 		this.articles = new LinkedHashSet();
 	}
 	
-	public Flow(String url)
+	public Flow(String path)
 	{
 		this();
-		this.setPath(url);
+		this.setPath(path);
 	}
 	
 	/**
@@ -105,11 +100,6 @@ public class Flow implements Model
 
 	public void setPath(String path)
 	{
-		try {
-			this.url = new URL(path);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
 		this.path = path;
 	}
 
@@ -177,6 +167,7 @@ public class Flow implements Model
 		if (this.rowid != null)
 		{
 			try {
+				System.out.println(this.path + " " + this.rowid);
 				this.prepare = Query.getInstance().prepareStatement("update flow SET path=?, type=? where rowid=?");
 				this.prepare.setString(1, this.path);
 				this.prepare.setString(2,  this.type.getType());

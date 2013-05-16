@@ -20,15 +20,48 @@ public class FolderFlow extends Flow implements ArticleRecover
 	@Override
 	public void recover() {
 		File[] files = this.listFiles(this.path);
-		System.out.println(files);
 		
+		for(File file : files)
+		{
+			try {
+				String extension = this.recoverType(file.getAbsolutePath());
+				if (extension != null)
+				{
+					switch(FlowType.getName(extension))
+					{
+						case HTML:
+							Flow htmlflow = new HTMLFlow(file);
+							this.articles.addAll(htmlflow.getArticles());
+							break;
+						case RSS:
+							Flow rssflow = new RSSFlow(file);
+							this.articles.addAll(rssflow.getArticles());
+							break;
+						default:
+							break;
+					}
+				}
+			} catch (UnknownTypeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public File[] listFiles(String path)
 	{ 
 		File[] files = null; 
-		File directoryToScan = new File(path); 
-		files = directoryToScan.listFiles(); 
+		File fileOrDirectory = new File(path);
+		
+		if (fileOrDirectory.isDirectory())
+		{
+			files = fileOrDirectory.listFiles(); 
+		}
+		else
+		{
+			files[0] = fileOrDirectory;
+		}
+		
 		return files; 
 	}
 	
@@ -38,15 +71,15 @@ public class FolderFlow extends Flow implements ArticleRecover
 		return null;
 	}
 	
-    public String recoverType(URL url) throws UnknownTypeException {
+    public String recoverType(String path) throws UnknownTypeException {
 		
-		String str[] = url.getFile().split("\\.");
+		String str[] = path.split("\\.");
 		
-		if (str.length==1)
+		if (str.length > 1)
 		{
-			throw new UnknownTypeException("type missing");
+			return str[str.length-1];
 		}
-
-		return str[str.length-1];
+		return null;
+		
 	}
 }
