@@ -1,7 +1,9 @@
 package app.view;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -273,8 +275,11 @@ public class View
 		this.currentState = i;
 	}
 	
-	private void generateReport() {
+	private void generateReport() throws Exception {
+		File f = new File("report.html");
 		
+		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+		bw.write("<html>")
 	}
 	
 	private String getTypeOfPath(String path)

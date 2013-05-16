@@ -154,5 +154,12 @@ public class Article implements Model
 				"\n]";
 	}
 	
-	
+	public String toHtml() {
+		return "<article>" +
+				"<h4>" + title + "</h4><br />" +
+				"<p><b>date    : </b>" + date + "</p>" +
+				"<p><b>content : </b>" + content + "</p>" + 
+				"<p><b>author  : </b>" + author + "</p>" +
+				"</article>";
+	}
 }
