@@ -7,7 +7,7 @@ import java.util.Set;
 import app.article.Article;
 import app.core.exception.UnknownTypeException;
 
-public class FolderFlow extends Flow implements ArticleRecover
+public class FolderFlow extends Flow
 {
 
 	public FolderFlow(String url)

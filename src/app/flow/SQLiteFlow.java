@@ -6,7 +6,7 @@ import java.util.Set;
 import app.article.Article;
 import app.article.ArticleTable;
 
-public class SQLiteFlow extends Flow implements ArticleRecover
+public class SQLiteFlow extends Flow
 {
 	public SQLiteFlow()
 	{
@@ -26,7 +26,6 @@ public class SQLiteFlow extends Flow implements ArticleRecover
 
 	@Override
 	public Set<Article> search(String keyworkds) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.articles;
 	}
 }

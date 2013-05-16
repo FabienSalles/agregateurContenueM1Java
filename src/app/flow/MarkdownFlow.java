@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import app.article.Article;
 
-public class MarkdownFlow extends Flow implements ArticleRecover {
+public class MarkdownFlow extends Flow {
 
 	
 	
@@ -44,8 +44,7 @@ public class MarkdownFlow extends Flow implements ArticleRecover {
 
 	@Override
 	public Set<Article> search(String keyworkds) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.articles;
 	}
 
 }

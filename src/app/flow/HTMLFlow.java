@@ -25,17 +25,8 @@ import app.article.HTMLArticle;
 import app.article.XMLArticle;
 import app.core.exception.UnknownTypeException;
 
-public class HTMLFlow extends Flow implements ArticleRecover
-{	
-	/**
-	 *  Chemin du flux pour le web
-	 */
-	protected URL url;
-	/**
-	 *  Chemin du flux en local
-	 */
-	protected File file;
-	
+public class HTMLFlow extends Flow
+{
 	public HTMLFlow(URL url)
 	{
 		super(url.getPath(), FlowType.HTML);
@@ -60,18 +51,6 @@ public class HTMLFlow extends Flow implements ArticleRecover
 	{
 		this(url);
 		this.rowid = rowid;		
-	}
-	
-	public void setUrl(URL url)
-	{
-		this.url = url;
-		this.path = url.getPath();
-	}
-	
-	public void setFile(File file)
-	{
-		this.file = file;
-		this.path = file.getAbsolutePath();
 	}
 	
 	/**
@@ -110,12 +89,13 @@ public class HTMLFlow extends Flow implements ArticleRecover
 				this.articles.add(new HTMLArticle(doc, doc.select("body").get(0), this.url != null ? this.url.getHost() : this.file.getName()));
 			}
 		}
+		
+		this.toString();
 	}
     
 	@Override
 	public Set<Article> search(String keyworkds) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.articles;
 	}
 
 }

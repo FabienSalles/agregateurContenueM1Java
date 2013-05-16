@@ -1,5 +1,6 @@
 package app.flow;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -12,12 +13,21 @@ import app.article.Article;
 import app.database.Model;
 import app.database.Query;
 
-public class Flow implements Model
+public class Flow implements Model, ArticleRecover
 {
 	/**
 	 * Id of the flow in the database
 	 */
 	protected Integer rowid;
+	
+	/**
+	 *  Chemin du flux pour le web
+	 */
+	protected URL url;
+	/**
+	 *  Chemin du flux en local
+	 */
+	protected File file;
 	
 	/**
 	 *  liste d'articles correspondant au flux
@@ -50,7 +60,7 @@ public class Flow implements Model
 	public Flow(String path)
 	{
 		this();
-		this.setPath(path);
+		this.path =path;
 	}
 	
 	public Flow(String path, FlowType type)
@@ -109,10 +119,35 @@ public class Flow implements Model
 	{
 		return path;
 	}
+	
+	public void setUrl(URL url)
+	{
+		this.url = url;
+		this.path = url.getProtocol() + "://" + url.getHost() + url.getPath();
+	}
+	
+	public void setFile(File file)
+	{
+		this.file = file;
+		this.path = file.getAbsolutePath();
+	}
 
 	public void setPath(String path)
 	{
 		this.path = path;
+		if (this.getTypeOfPath(path).equals("url"))
+		{
+			try {
+				this.setUrl(new URL(path));
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			this.setFile(new File(path));
+		}
 	}
 
 	/**
@@ -124,6 +159,15 @@ public class Flow implements Model
 		{
 			System.out.println(article);
 		}
+	}
+	
+	public String getTypeOfPath(String path)
+	{
+		if (path.startsWith("http"))
+		{
+			return "url";
+		}
+		return "file";
 	}
 	
 	/**
@@ -206,7 +250,6 @@ public class Flow implements Model
 		if (this.rowid != null)
 		{
 			try {
-				System.out.println(this.path + " " + this.rowid);
 				this.prepare = Query.getInstance().prepareStatement("update flow SET path=?, type=? where rowid=?");
 				this.prepare.setString(1, this.path);
 				this.prepare.setString(2,  this.type.getType());
@@ -243,6 +286,18 @@ public class Flow implements Model
 	{
 		return "Flow [rowid=" + rowid + ", type=" + type + ", path=" + path
 				+ "]";
+	}
+
+	@Override
+	public void recover() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Set<Article> search(String keyworkds) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

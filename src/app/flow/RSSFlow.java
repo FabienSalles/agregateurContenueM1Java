@@ -30,16 +30,8 @@ import app.article.HTMLArticle;
 import app.article.XMLArticle;
 import app.core.exception.UnknownTypeException;
 
-public class RSSFlow extends Flow implements ArticleRecover
-{	
-	/**
-	 *  Chemin du flux pour le web
-	 */
-	protected URL url;
-	/**
-	 *  Chemin du flux en local
-	 */
-	protected File file;
+public class RSSFlow extends Flow
+{
 	
 	public RSSFlow(URL url)
 	{
@@ -65,18 +57,6 @@ public class RSSFlow extends Flow implements ArticleRecover
 	{
 		this(url);
 		this.rowid = rowid;		
-	}
-	
-	public void setUrl(URL url)
-	{
-		this.url = url;
-		this.path = url.getPath();
-	}
-	
-	public void setFile(File file)
-	{
-		this.file = file;
-		this.path = file.getAbsolutePath();
 	}
 	
 	@Override
@@ -132,8 +112,7 @@ public class RSSFlow extends Flow implements ArticleRecover
     
 	@Override
 	public Set<Article> search(String keyworkds) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.articles;
 	}
 
 }

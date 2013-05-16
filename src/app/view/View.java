@@ -1,9 +1,11 @@
 package app.view;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.EnumSet;
 import java.util.LinkedHashSet;
@@ -16,6 +18,9 @@ import app.article.ArticleTable;
 import app.flow.Flow;
 import app.flow.FlowTable;
 import app.flow.FlowType;
+import app.flow.FolderFlow;
+import app.flow.HTMLFlow;
+import app.flow.RSSFlow;
 
 public class View
 {
@@ -93,11 +98,46 @@ public class View
 		
 		String flowPath = scanner.next();
 		
-		Flow f = new Flow();
-		f.setType(ft);
-		f.setPath(flowPath);
-		
-		flows.add(f);
+		String typeofPath = getTypeOfPath(flowPath);
+		Flow flow = null;
+		switch(ft)
+		{
+			case HTML:
+				if (typeofPath.equals("url"))
+				{
+					try {
+						flow = new HTMLFlow(new URL(flowPath));
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					}
+				}
+				else
+				{
+					flow = new HTMLFlow(new File(flowPath));
+				}
+				break;
+			case RSS:
+				if (typeofPath.equals("url"))
+				{
+					try {
+						flow = new RSSFlow(new URL(flowPath));
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					}
+				}
+				else
+				{
+					flow = new RSSFlow(new File(flowPath));
+				}
+				break;
+			case FOLDER:
+				flow = new FolderFlow(flowPath);
+				break;
+			default:
+				break;
+		}
+		flow.save();
+		flows.add(flow);
 		System.out.println("The flow has been added.");
 	}
 	
@@ -136,6 +176,7 @@ public class View
 			for (Flow f: this.flows) {
 				if (i == value) {
 					f.setPath(newPath);
+					f.recover();
 					f.update();
 				}
 				i++;
@@ -200,17 +241,14 @@ public class View
 			str = scanner.nextLine();
 		System.out.println(str);
 		
-		try {
-			
-			Set<Article> articles = articleTable.searchArticlesByKeywords(str);
-			
-			if (articles != null) {
-				articleView(articles);
-			} else {
-				System.out.println("No article(s) found.");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		Set<Article> articles = new LinkedHashSet<Article>();
+		
+		for (Flow f : this.flows) {
+			articles.addAll(f.search(str));
+		}
+		
+		if (articles != null) {
+			articleView(articles);
 		}
 	}
 	
@@ -239,5 +277,14 @@ public class View
 	
 	public void setCurrentState(int i) {
 		this.currentState = i;
+	}
+	
+	private String getTypeOfPath(String path)
+	{
+		if (path.startsWith("http"))
+		{
+			return "url";
+		}
+		return "file";
 	}
 }

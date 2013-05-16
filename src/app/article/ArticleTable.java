@@ -29,7 +29,7 @@ public class ArticleTable
 		Set<Article> articles = new LinkedHashSet<Article>();
 		
 		Statement stat = this.conn.createStatement();
-		ResultSet rs = stat.executeQuery("SELECT * FROM Articles;");
+		ResultSet rs = stat.executeQuery("SELECT * FROM Article;");
         
 		while(rs.next())
 		{
@@ -56,7 +56,7 @@ public class ArticleTable
 		if (splittedKeywords.length < 1)
 			return null;
 		
-		String query = "SELECT * FROM Articles ";
+		String query = "SELECT * FROM Article ";
 		
 		for (int i = 0; i < splittedKeywords.length; i++) {
 			if (i == 0) {
