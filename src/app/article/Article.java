@@ -81,6 +81,9 @@ public class Article implements Model
 		this.author = author;
 	}
 
+	/**
+	 * SAve article in database
+	 */
 	@Override
 	public void save()
 	{
@@ -98,7 +101,10 @@ public class Article implements Model
 		}
 		
 	}
-
+	
+	/**
+	 * Update article in database
+	 */
 	@Override
 	public void update()
 	{
@@ -119,6 +125,9 @@ public class Article implements Model
 		}
 	}
 	
+	/**
+	 * Delete article in database
+	 */
 	@Override
 	public void delete()
 	{

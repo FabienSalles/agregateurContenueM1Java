@@ -71,13 +71,14 @@ public class HTMLFlow extends Flow implements ArticleRecover
 		org.jsoup.nodes.Document doc = null;
 		
 		try {
+			// if the flow is an url
 			if (this.url != null)
 			{
 				
 				doc = Jsoup.parse(this.url, 3000);
 			}
 			else
-			{
+			{ // else is a local path
 				doc = Jsoup.parse(this.file, "UTF-8");
 			}
 		} catch (IOException e) {
@@ -87,6 +88,7 @@ public class HTMLFlow extends Flow implements ArticleRecover
 		if (doc != null)
 		{
 			Elements elems = doc.select("article");
+			// for multiple articles in flow
 			for (int i = 0; i < elems.size(); i++)
 	        {
 	        	this.articles.add(new HTMLArticle(doc, elems.get(i), this.url != null ? this.url.getHost() : this.file.getName()));

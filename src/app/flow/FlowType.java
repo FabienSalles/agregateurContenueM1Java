@@ -1,5 +1,10 @@
 package app.flow;
 
+/**
+ * Enum of type of flow
+ * @author fsalles
+ *
+ */
 public enum FlowType {
 	HTML("html"),
 	RSS("rss"),

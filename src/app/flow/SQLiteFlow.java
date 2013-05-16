@@ -8,6 +8,10 @@ import app.article.ArticleTable;
 
 public class SQLiteFlow extends Flow implements ArticleRecover
 {
+	public SQLiteFlow()
+	{
+		this.type = FlowType.DATABASE;
+	}
 	@Override
 	public void recover()
 	{

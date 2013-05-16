@@ -16,6 +16,10 @@ public class FlowTable
 {
 	private Set<Flow> flows;
 	private Connection conn;
+	
+	/**
+	 * Instance for the singleton
+	 */
 	private static FlowTable instance;
 	
 	private FlowTable()
@@ -23,6 +27,10 @@ public class FlowTable
 		this.conn  = Query.getInstance();
 	}
 	
+	/**
+	 * Get all objects
+	 * @return LinkedHasSet<flow>
+	 */
 	public Set<Flow> getFlow()
 	{
 		this.flows = new LinkedHashSet();
@@ -41,6 +49,11 @@ public class FlowTable
 		return flows;
 	}
 	
+	/**
+	 * Get flow by type
+	 * @param type
+	 * @return LinkedHasSet<flow>
+	 */
 	public Set<Flow> getFlowByType(String type)
 	{
 		flows = new LinkedHashSet();
@@ -66,6 +79,10 @@ public class FlowTable
 		return flows;
 	}
 	
+	/**
+	 * add flow in the list of article
+	 * @param rs
+	 */
 	private void addFlow(ResultSet rs)
 	{
 		try {

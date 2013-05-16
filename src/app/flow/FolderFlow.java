@@ -18,33 +18,35 @@ public class FolderFlow extends Flow implements ArticleRecover
 	}
 	
 	@Override
-	public void recover() {
+	public void recover()
+	{
 		File[] files = this.listFiles(this.path);
+		Flow flow = null;
 		
-		for(File file : files)
-		{
-			try {
+		try {
+			for(File file : files)
+			{
 				String extension = this.recoverType(file.getAbsolutePath());
 				if (extension != null)
 				{
 					switch(FlowType.getName(extension))
 					{
 						case HTML:
-							Flow htmlflow = new HTMLFlow(file);
-							this.articles.addAll(htmlflow.getArticles());
+							flow = new HTMLFlow(file);
+							this.articles.addAll(flow.getArticles());
 							break;
 						case RSS:
-							Flow rssflow = new RSSFlow(file);
-							this.articles.addAll(rssflow.getArticles());
+							flow = new RSSFlow(file);
+							this.articles.addAll(flow.getArticles());
 							break;
 						default:
 							break;
 					}
-				}
-			} catch (UnknownTypeException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				}	
 			}
+		} catch (UnknownTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

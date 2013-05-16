@@ -18,6 +18,7 @@ public class Main
 	public static void main(String args[])
 	{
 		FolderFlow flow = new FolderFlow("/home/fsalles/src/MIAGE/PROJET1_M1/data/dossier");
+		flow.saveArticles();
 //		Set<Flow> flows = FlowTable.getInstance().getFlow();
 //		
 //		for(Flow flow : flows)

@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 public class Query
 {
-    
     private final static String FILE_PROPS = "/database/database.properties";
     /**
      * Driver

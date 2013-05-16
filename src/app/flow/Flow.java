@@ -103,6 +103,9 @@ public class Flow implements Model
 		this.path = path;
 	}
 
+	/**
+	 * Render articles
+	 */
 	public void displayArticles()
 	{
 		for(Article article: this.articles)
@@ -111,6 +114,11 @@ public class Flow implements Model
 		}
 	}
 	
+	/**
+	 * Get article by index
+	 * @param index
+	 * @return
+	 */
 	public Article get(int index)
 	{
 		int i = 0;
@@ -127,6 +135,11 @@ public class Flow implements Model
 		return find;
 	}
 	
+	/**
+	 * Remove article in the list
+	 * @param index
+	 * @return
+	 */
 	public boolean remove(int index)
 	{
 		int i = 0;
@@ -144,7 +157,9 @@ public class Flow implements Model
 		return delete;
 	}
 	
-	
+	/**
+	 * Save article in the database
+	 */
 	@Override
 	public void save()
 	{
@@ -161,6 +176,19 @@ public class Flow implements Model
 		
 	}
 	
+	/**
+	 * Save all articles in the database instead save flow
+	 */
+	public void saveArticles()
+	{
+		for(Article article: this.articles)
+		{
+			article.save();
+		}
+	}
+	/**
+	 * Update article in the database
+	 */
 	@Override
 	public void update()
 	{
@@ -179,6 +207,9 @@ public class Flow implements Model
 		}
 	}
 	
+	/**
+	 * Delete article in the database
+	 */
 	@Override
 	public void delete()
 	{
